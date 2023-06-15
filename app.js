@@ -32,7 +32,7 @@ app.post("/addcustomer", (req, res) => {
     }
   );
 
-  // User registration successful
+  // customer registration successful
   res.status(200).json({ message: "customer registered successfully" });
 });
 
@@ -56,8 +56,55 @@ app.post("/addsupplier", (req, res) => {
     }
   );
 
-  // User registration successful
+  // supplier registration successful
   res.status(200).json({ message: "supplier registered successfully" });
+});
+
+//route for add business profile information
+
+app.post("/addBusinessProfile", (req, res) => {
+  const {
+    userId,
+    businessName,
+    companyPanNo,
+    companyTanNo,
+    msmeNo,
+    gstNo,
+    bankDetails,
+    incorporateCertificate,
+    bankAccountNo,
+  } = req.body;
+
+  //mysql connection
+  mysqlConnection.query(
+    "INSERT INTO businessprofileinformation (userId ,businessName,companyPanNo,companyTanNo,msmeNo,gstNo,bankDetails,incorporateCertificate,bankAccountNo) VALUES (?, ?, ?,?,?, ?, ?,?,?)",
+    [
+      userId,
+      businessName,
+      companyPanNo,
+      companyTanNo,
+      msmeNo,
+      gstNo,
+      bankDetails,
+      incorporateCertificate,
+      bankAccountNo,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error registering business Profile Information: ", err);
+        res.status(500).json({
+          error:
+            "An error occurred while registering business Profile Information",
+        });
+        return;
+      }
+    }
+  );
+
+  // business profile information registration successful
+  res
+    .status(200)
+    .json({ message: "Business Profile information registered successfully" });
 });
 
 //server create
